@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import {model} from "mongoose";
+import Feedback from "./feedbackModel.js";
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -18,7 +19,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["admin", "user"], 
     required: true
-  }
+  },
+  feedbacks: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Feedback' 
+  }]
 }, { timestamps: true });
 
 const User = model('user', userSchema);

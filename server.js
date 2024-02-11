@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
 import userRoute from "./Routes/userRoute.js";
+import feedbackRoute from "./Routes/feedbackRoute.js"
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -15,6 +16,10 @@ app.use(cors());
 
 // Routes
 app.use("/api/user",userRoute)
+app.use("/api/feedback",feedbackRoute)
+
+
+
 
 //mongoose connection
 mongoose.connect(process.env.MONGO)
