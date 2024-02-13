@@ -4,7 +4,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
 import userRoute from "./Routes/userRoute.js";
-import feedbackRoute from "./Routes/feedbackRoute.js"
+import feedbackRoute from "./Routes/feedbackRoute.js";
+import contentRoute from "./Routes/contentRoute.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -14,10 +15,18 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
+app.use((req, res, next) => {
+  console.log(req.path, req.method);  
+  next();
+});
+
+
+
 // Routes
+app.use("/images", express.static("images"));
 app.use("/api/user",userRoute)
 app.use("/api/feedback",feedbackRoute)
-
+app.use("/api/content",contentRoute)
 
 
 
@@ -31,3 +40,5 @@ mongoose.connect(process.env.MONGO)
   .catch((err) => {
     console.log("Error connecting to the database:", err);
   });
+
+
