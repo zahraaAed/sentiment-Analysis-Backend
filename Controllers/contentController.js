@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Content from "../Models/contentModel.js";
 
 //get All

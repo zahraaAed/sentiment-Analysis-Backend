@@ -22,6 +22,14 @@ const userSchema = new mongoose.Schema({
   feedbacks: [{ 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'feedback' 
+  }],
+  rooms: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'room' 
+  }],
+  messages: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'message' 
   }]
 }, { timestamps: true });
 
