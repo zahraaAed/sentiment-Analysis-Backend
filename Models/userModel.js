@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
   messages: [{ 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'message' 
+  }],
+  text_Submissions:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'textSubmission' 
   }]
 }, { timestamps: true });
 

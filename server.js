@@ -7,7 +7,8 @@ import userRoute from "./Routes/userRoute.js";
 import feedbackRoute from "./Routes/feedbackRoute.js";
 import contentRoute from "./Routes/contentRoute.js";
 import roomRoute from "./Routes/roomsRoute.js";
-import messageRoute from "./Routes/messagesRoute.js"
+import messageRoute from "./Routes/messagesRoute.js";
+import TextSubmissionRoute from "./Routes/textSubmissionRoute.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -31,7 +32,7 @@ app.use("/api/feedback",feedbackRoute)
 app.use("/api/content",contentRoute)
 app.use("/api/room",roomRoute)
 app.use("/api/message",messageRoute)
-
+app.use("/api/textSubmission",TextSubmissionRoute)
 //mongoose connection
 mongoose.connect(process.env.MONGO)
   .then(() => {

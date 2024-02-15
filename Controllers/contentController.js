@@ -109,3 +109,23 @@ export const updateContent = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+  //get grouped messages
+  export const getGroupedMessages = async (req, res) => {
+    try {
+      const groupedMessages = await Message.aggregate([ //aggregate method provided by Mongoose to perform aggregation queries.
+      // Aggregation queries allow us to perform operations like grouping, sorting, and filtering on our data.
+        {
+          $group: {
+            _id: { userId: "$userId", roomId: "$roomId" },
+            messages: { $push: "$content" },
+            count: { $sum: 1 } // Optional: Count of messages in the group
+          }
+        }
+      ]);
+      
+      res.json(groupedMessages);
+    } catch (error) {
+      console.error("Error in retrieving grouped messages:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
