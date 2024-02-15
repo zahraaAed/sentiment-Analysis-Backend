@@ -31,7 +31,7 @@ export const textSubmissionSchema=new mongoose.Schema({
         type: Date,
         default: () => new Date(Date.now() +   1 *   60 *   1000), // Set the expiration date to  1 minute from now
         // default: () => new Date(Date.now() +  15 *  24 *  60 *  60 *  1000), // Set the expiration date to  15 days from now
-        index: { expires: 'text' } // This creates a TTL index on the 'createdAt' field
+        index: { expiresAfterSeconds: 0 } 
       }
 },{ timestamps: true });
 

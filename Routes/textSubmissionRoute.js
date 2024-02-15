@@ -1,5 +1,5 @@
 import express from "express";
-import { addTextSubmission, getAllTextSubmissions, getGroupedTextSubmissions } from "../Controllers/textSubmissionController.js";
+import {addTextSubmission,getAllTextSubmissions, getGroupedTextSubmissions } from "../Controllers/textSubmissionController.js";
 
 const router = express.Router();
 

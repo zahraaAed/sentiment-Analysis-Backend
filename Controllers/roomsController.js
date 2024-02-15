@@ -67,3 +67,24 @@ export const updateRoom = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+
+  //get grouped rooms
+  export const getGroupedRooms = async (req, res) => {
+    try {
+      const groupedRooms= await Room.aggregate([ 
+        {
+          $group: {
+            _id: { userId: "$userId"},
+            names: { $push: "$name" },
+            count: { $sum: 1 } // Optional: Count of  feedbacks messages in the group
+          }
+        }
+      ]);
+      
+      res.json(groupedRooms);
+    } catch (error) {
+      console.error("Error in retrieving grouped rooms:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };

@@ -55,3 +55,24 @@ export const deleteFeedback = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+  //get grouped feedbacks
+  export const getGroupedFeedbacks = async (req, res) => {
+    try {
+      const groupedFeedbacks= await Feedback.aggregate([ 
+        {
+          $group: {
+            _id: { userId: "$userId"},
+            messages: { $push: "$message" },
+            count: { $sum: 1 } // Optional: Count of  feedbacks messages in the group
+          }
+        }
+      ]);
+      
+      res.json(groupedFeedbacks);
+    } catch (error) {
+      console.error("Error in retrieving grouped feedbacks messages:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
