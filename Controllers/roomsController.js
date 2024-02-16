@@ -3,14 +3,15 @@ import Room from "../Models/roomsModel.js";
 import User from "../Models/userModel.js";
 //add a room
 export const addRoom = async (req, res) => {
-  const { name, userId } = req.body;
+  const { name} = req.body;
+  const userId = req.cookies.userId;
   try {
     if (name && userId) {
       const userExists = await User.exists({ _id: userId });
       if (!userExists) {
         return res.status(404).json({ error: "User not found" });
       }
-      const room = await Room.create({ name, userId });
+      const room = await Room.create({ name, userId:userId });
       res.json(room);
     } else {
       console.log("Error: room or userId is missing");
@@ -34,6 +35,7 @@ export const getAllRooms = async (req, res) => {
 
 //delete room
 export const deleteRoom = async (req, res) => {
+
   try {
     const deletedRoom = await Room.findByIdAndDelete(req.params.id);
 

@@ -5,13 +5,13 @@ import {
   updateContent,
 } from "../Controllers/contentController.js";
 import upload from "../Middleware/multer.js";
-
+import { requireAuth } from "../Middleware/jwt.js";
 const router = express.Router();
 
 // Public routes
-router.get("/", getAllContent);
+router.get("/",requireAuth, getAllContent);
 router.post(
-  "/",
+  "/",requireAuth,
   upload.fields([
     { name: "imageHome", maxCount: 1 },
     { name: "imageAbout", maxCount: 1 },
@@ -21,7 +21,7 @@ router.post(
 );
 
 router.patch(
-  "/:id",
+  "/:id",requireAuth,
   upload.fields([
     { name: "imageHome", maxCount: 1 },
     { name: "imageAbout", maxCount: 1 },

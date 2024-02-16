@@ -17,14 +17,15 @@ export const getAllMessages = async (req, res) => {
 
   //add message
   export const addMessage = async (req, res) => {
-    const { content, userId,roomId } = req.body;
+    const { content,roomId } = req.body;
+    const userId = req.cookies.userId;
     try {
       if (content && userId && roomId) {
         const userExists = await User.exists({ _id: userId });
         if (!userExists) {
           return res.status(404).json({ error: "User not found" });
         }
-        const message = await Message.create({ content, userId,roomId });
+        const message = await Message.create({ content, userId:userId,roomId });
         await User.findByIdAndUpdate(userId, {
           $push: { messages: message._id },
         });

@@ -1,13 +1,12 @@
 import express from "express";
 
 import { addRoom, deleteRoom, getAllRooms, getGroupedRooms, updateRoom } from "../Controllers/roomsController.js";
-import { verifyToken } from "../Middleware/auth.js";
 const router = express.Router();
-
+import { requireAuth } from "../Middleware/jwt.js";
 // Public routes
-router.post("/",addRoom);
-router.get("/", verifyToken,getAllRooms);
-router.patch("/:id",updateRoom);
-router.delete("/:id",deleteRoom);
-router.get("/group",getGroupedRooms);
+router.post("/",requireAuth,addRoom);
+router.get("/",requireAuth, getAllRooms);
+router.patch("/:id",requireAuth,updateRoom);
+router.delete("/:id",requireAuth,deleteRoom);
+router.get("/group",requireAuth,getGroupedRooms);
 export default router;

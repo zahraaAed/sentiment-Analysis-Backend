@@ -1,9 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../Models/userModel.js";
-import sendgrid from '@sendgrid/mail'
 import mongoose from "mongoose";
-sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const userRegister = async (req, res) => {
   const { username, password, role, email } = req.body;
@@ -27,28 +25,6 @@ export const userRegister = async (req, res) => {
     const token = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
 
-    // res.status(200).json({status:200, message:'User signed up successfully', token:token})
-
-    await sendgrid.send({
-        to:`${email}`,
-        from:'zahraaalaaeddine94@gmail.com',
-        subject:'Email Verification',
-        html:`
-        <p>Hi there,</p>
-
-        <p>Thank you for signing up for Tonify. Click on the link below to verify your email:</p>
-        
-       <a href='http://localhost:4000/verify-email/?token=${token}'>verify your email</a> 
-        
-        <p>This link will expire in 24 hours. If you did not sign up for Tonify account,
-        you can safely ignore this email.</p>
-        
-       <p> Best,</p>
-        
-        <p>Tonify Team</p>
-        `
-    });
-
     res.status(201).json({ message: "user created successfully!", user });
   } catch (error) {
     console.error(error);
@@ -56,70 +32,38 @@ export const userRegister = async (req, res) => {
   }
 };
 
-export const verifyEmail = async(req,res,next) =>{
-  const {token} = req.query
+// export const userLogin = async (req, res) => {
+//   const { username, password } = req.body;
+//   const secretKey = process.env.JWT_SECRET;
 
-  try {
-      if(!token){
-          return res.status(400).json({status:400, message:"Invalid token!"})
-      }
+//   try {
+//     if (!secretKey) {
+//       throw new Error("JWT secret key not configured.");
+//     }
+//     const user = await User.findOne({ username });
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+//     if (!user || !(await bcrypt.compare(password, user.password))) {
+//       return res.status(401).json({ error: "Invalid username or password!" });
+//     }
 
-      const userId=  decoded._id
+//     const token = jwt.sign(
+//       { username: user.username, role: user.role },
+//       process.env.SECRET_KEY || "default_secret",
+//       { expiresIn: "1h" }
+//     );
 
-      const user= await User
-      .findById(userId)
+//     console.log("Login successful");
 
-      if(!user){
-          return res.status(400).json({status:404, message:'User not found'})
-      }
-
-      user.isVerified = true
-
-      await user.save()
-
-      res.status(200).json({status:200, message:'Email was verified successfully!'})
-      
-  } catch (err) {
-      next(err)
-  }
-
-}
-
-
-export const userLogin = async (req, res) => {
-  const { username, password } = req.body;
-  const secretKey = process.env.JWT_SECRET;
-
-  try {
-    if (!secretKey) {
-      throw new Error("JWT secret key not configured.");
-    }
-    const user = await User.findOne({ username });
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ error: "Invalid username or password!" });
-    }
-
-    const token = jwt.sign(
-      { username: user.username, role: user.role },
-      process.env.SECRET_KEY || "default_secret",
-      { expiresIn: "1h" }
-    );
-
-    console.log("Login successful");
-
-    res.status(200).json({
-      username: user.username,
-      role: user.role,
-      accessToken: token,
-    });
-  } catch (err) {
-    console.error("Error during user login:", err.message);
-    res.status(500).send("Sign in error");
-  }
-};
+//     res.status(200).json({
+//       username: user.username,
+//       role: user.role,
+//       accessToken: token,
+//     });
+//   } catch (err) {
+//     console.error("Error during user login:", err.message);
+//     res.status(500).send("Sign in error");
+//   }
+// };
 
 export const getUserById = async (req, res) => {
   try {
@@ -149,5 +93,34 @@ export const getUsers = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "error", error: error.message });
+  }
+};
+export const userLogin = async (req, res) => {
+  const { username, password } = req.body;
+  const secretKey = process.env.JWT_SECRET;
+
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: 'Invalid username or password!' });
+    }
+
+    const token = jwt.sign({ user: user.id }, secretKey, { expiresIn: '1h' });
+    
+    // Set the JWT token in the cookie
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
+    
+    // Set the user's role in the cookie
+    res.cookie('userrole', user.role, { httpOnly: false });
+
+    // Set the user's ID in the cookie
+    res.cookie("userId", user.id, { httpOnly: false });
+
+    res.status(200).json({ message: 'Logged in successfully!', user: user.id });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 };

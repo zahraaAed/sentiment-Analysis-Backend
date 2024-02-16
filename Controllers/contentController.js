@@ -13,7 +13,7 @@ export const getAllContent = async (req, res) => {
 
 export const createContent = async (req, res) => {
   const { aboutusContent, subtitleHeader, ourmissionContent } = req.body;
-
+ 
   // Validate required fields
   if (!aboutusContent || !subtitleHeader || !ourmissionContent) {
     return res.status(400).json({ message: "Please provide all required fields." });
@@ -129,3 +129,6 @@ export const updateContent = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   };
+
+
+

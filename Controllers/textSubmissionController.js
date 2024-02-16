@@ -46,7 +46,8 @@ export const getGroupedTextSubmissions = async (req, res) => {
   //add TextSubmission
   const urlRegex = /^https:\/\/www\.instagram\.com\/p\/[a-zA-Z0-9_-]+\/\?[^ "]+$/
 export const addTextSubmission = async (req, res) => {
-  const { text, URL, userId } = req.body;
+  const { text, URL } = req.body;
+  const userId = req.cookies.userId;
   try {
     if (text && URL && userId && urlRegex.test(URL)) {
       const userExists = await User.exists({ _id: userId });
