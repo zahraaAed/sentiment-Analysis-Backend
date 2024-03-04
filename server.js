@@ -24,12 +24,13 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(cors());
 // CORS configuration
 const corsOptions = {
-  origin: "*",
-  headers: ["Content-Type"],
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+  origin: 'https://sentiment-analysis-frontend-cv4q-704mbhdkv-zahraaaeds-projects.vercel.app', // Update this to match your frontend's domain
+  credentials: true, // This allows the frontend to send cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the methods you want to allow
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify the headers you want to allow
+ };
+ 
+ app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);   
