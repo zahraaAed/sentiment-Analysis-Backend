@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(cors());
 // CORS configuration
 const corsOptions = {
-  origin: "https://sentiment-analysis-frontend-cv4q-704mbhdkv-zahraaaeds-projects.vercel.app/",
+  origin: "*",
   headers: ["Content-Type"],
   credentials: true,
 };
