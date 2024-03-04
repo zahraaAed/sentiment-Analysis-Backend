@@ -95,6 +95,8 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ message: "error", error: error.message });
   }
 };
+
+//login
 export const userLogin = async (req, res) => {
   const { username, password } = req.body;
   const secretKey = process.env.JWT_SECRET;
@@ -107,6 +109,8 @@ export const userLogin = async (req, res) => {
     }
 
     const token = jwt.sign({ user: user.id }, secretKey, { expiresIn: '1h' });
+  
+
     
     // Set the JWT token in the cookie
     res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
@@ -117,8 +121,8 @@ export const userLogin = async (req, res) => {
     // Set the user's ID in the cookie
     res.cookie("userId", user.id, { httpOnly: false });
 
-    res.status(200).json({ message: 'Logged in successfully!', user: user.id });
-
+    res.status(200).json({ message: 'Logged in successfully!', user: user.id, token});
+console.log("logged in successfully")
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error', error: error.message });
