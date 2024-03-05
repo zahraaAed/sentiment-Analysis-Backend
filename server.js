@@ -23,13 +23,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 'https://sentiment-analysis-frontend-sigma.vercel.app/'];
 app.use((req,res,next)=>{
-  res.set('Access-Control-Allow-Origin', 'https://sentiment-analysis-frontend-sigma.vercel.app/');
+  res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods','*');
 next();
 })
 
 app.use(cors({
-  origin: 'https://sentiment-analysis-frontend-sigma.vercel.app/',
+  origin: '*',
   credentials: true // Allow requests with credentials
 }));
 // app.use(cors());
