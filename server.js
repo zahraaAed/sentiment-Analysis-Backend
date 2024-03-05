@@ -31,7 +31,11 @@ app.use(express.urlencoded({ extended: false }));
 //  };
  
 //  app.use(cors(corsOptions));
-app.use(cors());
+// app.use(cors({
+//   origin: "https://sentiment-analysis-frontend-cv4q-704mbhdkv-zahraaaeds-projects.vercel.app/",
+//   credentials: true
+// }));
+// app.options('*', cors());
 app.use((req, res, next) => {
   console.log(req.path, req.method);   
   next();
