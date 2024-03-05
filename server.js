@@ -17,10 +17,6 @@ dotenv.config();
 const PORT = process.env.PORT ||  4000;
 const app = express();
 
-app.use(cors({
-  origin: 'https://sentiment-analysis-frontend-cv4q.vercel.app/',
-  credentials: true // Allow requests with credentials
-}));
 app.use(cookieParser());
 app.use(logger("dev"));
 app.use(express.json());
@@ -32,10 +28,10 @@ const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 
 // next();
 // })
 
-// app.use(cors({
-//   origin: 'https://sentiment-analysis-frontend-cv4q.vercel.app/',
-//   credentials: true // Allow requests with credentials
-// }));
+app.use(cors({
+  origin: 'https://sentiment-analysis-frontend-cv4q.vercel.app/',
+  credentials: true // Allow requests with credentials
+}));
 // app.use(cors());
 // CORS configuration
 // const corsOptions = {
