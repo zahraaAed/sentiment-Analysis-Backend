@@ -31,14 +31,30 @@ app.use(express.urlencoded({ extended: false }));
 //  };
  
 //  app.use(cors(corsOptions));
-app.use(cors({
-  origin: "https://sentiment-analysis-frontend-psbh.vercel.app/",
-  credentials: true
-}));
+const cors = require('cors');
+
+// Define a function to dynamically set the origin based on the request
+const corsOptions = {
+ origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (origin === 'https://sentiment-analysis-frontend-psbh.vercel.app/' || origin === 'https://sentiment-analysis-frontend-sigma.vercel.app/') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+ },
+ credentials: true,
+};
+
+// Use the cors middleware with the dynamic origin function
+app.use(cors(corsOptions));
+
+// Your existing middleware and routes
 app.options('*', cors());
 app.use((req, res, next) => {
-  console.log(req.path, req.method);   
-  next();
+ console.log(req.path, req.method);   
+ next();
 });
 
 // Routes
