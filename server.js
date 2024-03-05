@@ -29,7 +29,7 @@ const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 
 // })
 
 app.use(cors({
-  origin: 'https://sentiment-analysis-frontend-cv4q.vercel.app/',
+  origin: 'https://sentiment-analysis-frontend-cv4q.vercel.app',
   credentials: true // Allow requests with credentials
 }));
 // app.use(cors());
