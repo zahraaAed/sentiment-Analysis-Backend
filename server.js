@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 'https://sentiment-analysis-frontend-sigma.vercel.app/'];
+const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 'https://sentiment-analysis-frontend-sigma.vercel.app/','https://sentiment-analysis-frontend-psbh.vercel.app/1'];
 // app.use((req,res,next)=>{
 //   res.set('Access-Control-Allow-Origin', '*');
 //   res.set('Access-Control-Allow-Methods','*');
