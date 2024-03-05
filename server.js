@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 //  };
  
 //  app.use(cors(corsOptions));
-const cors = require('cors');
+
 
 // Define a function to dynamically set the origin based on the request
 const corsOptions = {
