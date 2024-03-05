@@ -21,6 +21,18 @@ app.use(cookieParser());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 'https://sentiment-analysis-frontend-sigma.vercel.app/'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Allow requests with credentials
+}));
 // app.use(cors());
 // CORS configuration
 // const corsOptions = {
@@ -51,7 +63,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(cors(corsOptions));
 
 // Your existing middleware and routes
-app.options('*', cors());
+// app.options('*', cors());
 app.use((req, res, next) => {
  console.log(req.path, req.method);   
  next();
