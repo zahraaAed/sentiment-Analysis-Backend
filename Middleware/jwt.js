@@ -52,10 +52,11 @@ import Jwt from "jsonwebtoken";
 export const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
   const secretKey = process.env.JWT_SECRET
-  console.log("token: ",token)
+
   if (!token) {
     return res.redirect('/login');
   }
+
   Jwt.verify(token, secretKey, (err, decodedToken) => {
     if (err) {
       console.error(err.message);

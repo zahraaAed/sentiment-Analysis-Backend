@@ -5,10 +5,10 @@ export const textSubmissionSchema=new mongoose.Schema({
         type: String,
         required: true,
       },
-      text:[{
+      text:{
         type: String,
         required: true,
-      }],
+      },
       URL:{
         type: String,
         
@@ -35,6 +35,6 @@ export const textSubmissionSchema=new mongoose.Schema({
       }
 },{ timestamps: true });
 
-const TextSubmission = model('TextSubmission', textSubmissionSchema);
+const TextSubmission = model('textSubmission', textSubmissionSchema);
 
 export default TextSubmission;

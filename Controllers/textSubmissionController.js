@@ -43,105 +43,46 @@ export const getGroupedTextSubmissions = async (req, res) => {
   }
 };
 
-//   //add TextSubmission
-//   const urlRegex = /^https:\/\/www\.instagram\.com\/p\/[a-zA-Z0-9_-]+\/\?[^ "]+$/
-// export const addTextSubmission = async (req, res) => {
-//   const { text, URL } = req.body;
-//   const userId = req.cookies.userId;
-//   try {
-//     if (text && URL && userId && urlRegex.test(URL)) {
-//       const userExists = await User.exists({ _id: userId });
-//       if (!userExists) {
-//         return res.status(404).json({ error: "User not found" });
-//       }
+  //add TextSubmission
+  const urlRegex = /^https:\/\/www\.instagram\.com\/p\/[a-zA-Z0-9_-]+\/\?[^ "]+$/
+export const addTextSubmission = async (req, res) => {
+  const { text, URL } = req.body;
+  const userId = req.cookies.userId;
+  try {
+    if (text && URL && userId && urlRegex.test(URL)) {
+      const userExists = await User.exists({ _id: userId });
+      if (!userExists) {
+        return res.status(404).json({ error: "User not found" });
+      }
       
-//       // Perform sentiment analysis on the text
-//       const result = sentiment.analyze(text);
-//       const sentimentScore = result.score;
-//       const sentimentLabel = result.comparative >  0 ? 'positive' : result.comparative <  0 ? 'negative' : 'neutral';
+      // Perform sentiment analysis on the text
+      const result = sentiment.analyze(text);
+      const sentimentScore = result.score;
+      const sentimentLabel = result.comparative >  0 ? 'positive' : result.comparative <  0 ? 'negative' : 'neutral';
 
-//       // Create a new TextSubmission with the sentiment analysis results
-//       const textSubmission = await TextSubmission.create({
-//         text,
-//         sentiment_label: sentimentLabel,
-//         sentiment_score: sentimentScore,
-//         URL,
-//         userId
-//       });
+      // Create a new TextSubmission with the sentiment analysis results
+      const textSubmission = await TextSubmission.create({
+        text,
+        sentiment_label: sentimentLabel,
+        sentiment_score: sentimentScore,
+        URL,
+        userId
+      });
 
-//       // Update the user's TextSubmissions list
-//       await User.findByIdAndUpdate(userId, {
-//         $push: { TextSubmissions: textSubmission._id },
-//       });
+      // Update the user's TextSubmissions list
+      await User.findByIdAndUpdate(userId, {
+        $push: { TextSubmissions: textSubmission._id },
+      });
 
-//       res.json(textSubmission);
-//     } else {
-//       console.log("Error: some contents are missing or URL format is incorrect");
-//       res.status(400).json({ error: "some contents are missing or URL format is incorrect" });
-//     }
-//   } catch (error) {
-//     console.error("Error in adding TextSubmission:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// };
+      res.json(textSubmission);
+    } else {
+      console.log("Error: some contents are missing or URL format is incorrect");
+      res.status(400).json({ error: "some contents are missing or URL format is incorrect" });
+    }
+  } catch (error) {
+    console.error("Error in adding TextSubmission:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
       //check for delete and update and if they will be stored in front and how
-
-      export const addTextSubmission = async (req, res) => {
-        const { text, URL } = req.body;
-        const userId = req.cookies.userId;
-        try {
-          // Check if either text or URL is provided, but not both
-          if ((text && !URL) || (!text && URL) && userId) {
-            const userExists = await User.exists({ _id: userId });
-            if (!userExists) {
-              return res.status(404).json({ error: "User not found" });
-            }
-            
-            // If text is provided, perform sentiment analysis
-            if (text) {
-              const result = sentiment.analyze(text);
-              const sentimentScore = result.score;
-              const sentimentLabel = result.comparative >  0 ? 'positive' : result.comparative <  0 ? 'negative' : 'neutral';
-      
-              // Create a new TextSubmission with the sentiment analysis results
-              const textSubmission = await TextSubmission.create({
-                text,
-                sentiment_label: sentimentLabel,
-                sentiment_score: sentimentScore,
-                userId
-              });
-      
-              // Update the user's TextSubmissions list
-              await User.findByIdAndUpdate(userId, {
-                $push: { TextSubmissions: textSubmission._id },
-              });
-      
-              res.json(textSubmission);
-            } else if (URL && urlRegex.test(URL)) {
-              const textSubmission = await TextSubmission.create({
-                URL,
-                userId
-              });
-      
-              // Update the user's TextSubmissions list
-              await User.findByIdAndUpdate(userId, {
-                $push: { TextSubmissions: textSubmission._id },
-              });
-      
-              res.json(textSubmission);
-              console.log(textSubmission)
-            } else {
-              console.log("Error: some contents are missing or URL format is incorrect");
-              res.status(400).json({ error: "some contents are missing or URL format is incorrect" });
-            }
-          } else {
-            console.log("Error: some contents are missing or URL format is incorrect");
-            res.status(400).json({ error: "some contents are missing or URL format is incorrect" });
-          }
-        } catch (error) {
-          console.error("Error in adding TextSubmission:", error);
-          res.status(500).json({ error: "Internal server error" });
-        }
-      };
-      
