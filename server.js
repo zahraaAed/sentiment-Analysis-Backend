@@ -21,18 +21,18 @@ app.use(cookieParser());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 'https://sentiment-analysis-frontend-sigma.vercel.app/','https://sentiment-analysis-frontend-cv4q.vercel.app/'];
-// app.use((req,res,next)=>{
+// const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 'https://sentiment-analysis-frontend-sigma.vercel.app/','https://sentiment-analysis-frontend-cv4q.vercel.app/'];
+// // app.use((req,res,next)=>{
 //   res.set('Access-Control-Allow-Origin', '*');
 //   res.set('Access-Control-Allow-Methods','*');
 // next();
 // })
 
 app.use(cors({
-  origin: 'https://sentiment-analysis-frontend-cv4q.vercel.app',
+  origin: ' http://localhost:5173/',
   credentials: true // Allow requests with credentials
 }));
-// app.use(cors());
+
 // CORS configuration
 // const corsOptions = {
 //   origin: 'https://sentiment-analysis-frontend-cv4q-704mbhdkv-zahraaaeds-projects.vercel.app/', // Update this to match your frontend's domain

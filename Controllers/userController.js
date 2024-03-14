@@ -113,13 +113,13 @@ export const userLogin = async (req, res) => {
 
     
     // Set the JWT token in the cookie
-    res.cookie('jwt', token, { httpOnly: true,secure:true, maxAge: 3600000 });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
     
     // Set the user's role in the cookie
-    res.cookie('userrole', user.role, { httpOnly: false ,secure:true});
+    res.cookie('userrole', user.role, { httpOnly: false });
 
     // Set the user's ID in the cookie
-    res.cookie("userId", user.id, { httpOnly: false,secure:true });
+    res.cookie("userId", user.id, { httpOnly: false });
 
     res.status(200).json({ message: 'Logged in successfully!', user: user.id, token});
 console.log("logged in successfully")
