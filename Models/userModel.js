@@ -31,12 +31,16 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'message' 
   }],
+  questions: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Question' 
+  }],
   text_Submissions:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'textSubmission' 
   }]
 }, { timestamps: true });
 
-const User = model('user', userSchema);
+const User = model('User', userSchema);
 
 export default User;

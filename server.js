@@ -4,7 +4,7 @@ import logger from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
-import * as socketIo from 'socket.io'; // Update import statement
+import { Server } from 'socket.io'; // Update import statement
 import cookieParser from 'cookie-parser';
 import userRoute from "./Routes/userRoute.js";
 import feedbackRoute from "./Routes/feedbackRoute.js";
@@ -12,6 +12,7 @@ import contentRoute from "./Routes/contentRoute.js";
 import roomRoute from "./Routes/roomsRoute.js";
 import messageRoute from "./Routes/messagesRoute.js";
 import TextSubmissionRoute from "./Routes/textSubmissionRoute.js";
+import QuestionRoute from "./Routes/questionRoute.js";
 dotenv.config();
 
 const PORT = process.env.PORT ||  4000;
@@ -21,48 +22,12 @@ app.use(cookieParser());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// const allowedOrigins = ['https://sentiment-analysis-frontend-psbh.vercel.app/', 'https://sentiment-analysis-frontend-sigma.vercel.app/','https://sentiment-analysis-frontend-cv4q.vercel.app/'];
-// // app.use((req,res,next)=>{
-//   res.set('Access-Control-Allow-Origin', '*');
-//   res.set('Access-Control-Allow-Methods','*');
-// next();
-// })
 
 app.use(cors({
-  origin: ' http://localhost:5173/',
+  origin: 'http://localhost:5173',
   credentials: true // Allow requests with credentials
 }));
 
-// CORS configuration
-// const corsOptions = {
-//   origin: 'https://sentiment-analysis-frontend-cv4q-704mbhdkv-zahraaaeds-projects.vercel.app/', // Update this to match your frontend's domain
-//   credentials: true, // This allows the frontend to send cookies
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the methods you want to allow
-//   allowedHeaders: ['Content-Type', 'Authorization'], // Specify the headers you want to allow
-//  };
- 
-//  app.use(cors(corsOptions));
-
-
-// Define a function to dynamically set the origin based on the request
-// const corsOptions = {
-//  origin: function (origin, callback) {
-//     // Allow requests with no origin (like mobile apps or curl requests)
-//     if (!origin) return callback(null, true);
-//     if (origin === 'https://sentiment-analysis-frontend-psbh.vercel.app/' || origin === 'https://sentiment-analysis-frontend-sigma.vercel.app/') {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//  },
-//  credentials: true,
-// };
-
-// // Use the cors middleware with the dynamic origin function
-// app.use(cors(corsOptions));
-
-// Your existing middleware and routes
-// app.options('*', cors());
 app.use((req, res, next) => {
  console.log(req.path, req.method);   
  next();
@@ -76,12 +41,12 @@ app.use("/api/content", contentRoute);
 app.use("/api/room", roomRoute);
 app.use("/api/message", messageRoute);
 app.use("/api/textSubmission", TextSubmissionRoute);
-
+app.use("/api/question", QuestionRoute);
 // Create HTTP server
 const server = http.createServer(app);
 
 // Initialize Socket.IO
-const io = new socketIo.Server(server); // Use the Server constructor
+const io = new Server(server); // Use the Server constructor
 
 io.on('connection', (socket) => {
   console.log('A user was connected');

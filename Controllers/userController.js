@@ -73,7 +73,7 @@ export const getUserById = async (req, res) => {
       return res.status(404).json({ error: "user not found!" });
     }
 
-    const user = await User.findById(id).populate("feedbacks").populate("rooms").populate("messages").populate("text_Submissions");
+    const user = await User.findById(id).populate("feedbacks").populate("rooms").populate("messages").populate("text_Submissions").populate("questions");
     // const user = await User.findById(id);
 
     if (!user) {
@@ -89,7 +89,7 @@ export const getUserById = async (req, res) => {
 //get all users
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find().populate("feedbacks").populate("rooms").populate("messages").populate("text_Submissions");
+    const users = await User.find().populate("feedbacks").populate("rooms").populate("messages").populate("text_Submissions").populate("questions");
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "error", error: error.message });

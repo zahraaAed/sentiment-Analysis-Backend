@@ -4,13 +4,8 @@ import User from "../Models/userModel.js";
 // Get all feedback - Only accessible to admin
 export const getAllFeedback = async (req, res) => {
   try {
-  
-   
-      const feedbacks = await Feedback.find();
-      res.json(feedbacks);
-    
-      res.status(403).json({ message: "Unauthorized access" });
-    
+    const feedbacks = await Feedback.find().populate('userId', 'username');;
+    res.json(feedbacks);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -38,7 +33,7 @@ export const addFeedback = async (req, res) => {
     }
   } catch (error) {
     console.error("Error in adding feedback:", error);
-    res.status(500).json({ error: "Internal server error" , err:error.message});
+    res.status(500).json({ error: "Internal server error", err: error.message });
   }
 };
 
@@ -48,7 +43,7 @@ export const deleteFeedback = async (req, res) => {
   const userId = req.cookies.jwt;
   try {
     const userRole = req.cookies.userrole;
-    if (userRole === 'admin') {
+    if (userRole === "admin") {
       const deletedFeedback = await Feedback.findByIdAndDelete(id);
       if (deletedFeedback) {
         // Remove the deleted feedback ID from the corresponding user document
@@ -70,22 +65,17 @@ export const deleteFeedback = async (req, res) => {
 
 // Get grouped feedbacks - Only accessible to admin
 export const getGroupedFeedbacks = async (req, res) => {
- 
   try {
-  
-      const groupedFeedbacks = await Feedback.aggregate([
-        {
-          $group: {
-            _id: { userId: "$userId"},
-            messages: { $push: "$message" },
-            count: { $sum: 1 } // Optional: Count of  feedbacks messages in the group
-          }
-        }
-      ]);
-      res.json(groupedFeedbacks);
- 
-      res.status(403).json({ message: "Unauthorized access" });
-    
+    const groupedFeedbacks = await Feedback.aggregate([
+      {
+        $group: {
+          _id: { userId: "$userId" },
+          messages: { $push: "$message" },
+          count: { $sum: 1 }, // Optional: Count of feedbacks messages in the group
+        },
+      },
+    ]);
+    res.json(groupedFeedbacks);
   } catch (error) {
     console.error("Error in retrieving grouped feedbacks messages:", error);
     res.status(500).json({ error: "Internal server error" });

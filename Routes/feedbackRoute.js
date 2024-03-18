@@ -10,7 +10,7 @@ import { requireAuth } from "../Middleware/jwt.js";
 const router = express.Router();
 
 // Public routes
-router.get("/", requireAuth, getAllFeedback);
+router.get("/",getAllFeedback);
 router.post("/", requireAuth, addFeedback);
 router.delete("/:id", requireAuth, deleteFeedback);
 router.get("/group",getGroupedFeedbacks);
