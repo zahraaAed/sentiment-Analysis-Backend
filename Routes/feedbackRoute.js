@@ -11,7 +11,7 @@ const router = express.Router();
 
 // Public routes
 router.get("/",getAllFeedback);
-router.post("/", requireAuth, addFeedback);
+router.post("/", addFeedback);
 router.delete("/:id", requireAuth, deleteFeedback);
 router.get("/group",getGroupedFeedbacks);
 export default router;

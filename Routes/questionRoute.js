@@ -12,7 +12,7 @@ const router = express.Router();
 
 // Public routes
 router.get("/", getAllQuestions);
-router.post("/", requireAuth, addQuestion);
+router.post("/", addQuestion);
 router.delete("/:id", requireAuth, deleteQuestion);
 router.get("/group", getGroupedQuestions);
 router.post("/:questionId",addAnswer)
