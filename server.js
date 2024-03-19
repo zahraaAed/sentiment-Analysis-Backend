@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://tonify-b853d.web.app/',
   credentials: true // Allow requests with credentials
 }));
 
