@@ -23,11 +23,17 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({
-  origin: 'https://tonify-b853d.web.app/',
-  credentials: true // Allow requests with credentials
-}));
+// app.use(cors({
+//   origin: 'https://tonify-b853d.web.app/',
+//   credentials: true 
+// }));
 
+app.use(cors({
+  origin: '*', // Use a wildcard for development
+  credentials: true // Allow requests with credentials
+ }));
+
+ 
 app.use((req, res, next) => {
  console.log(req.path, req.method);   
  next();
