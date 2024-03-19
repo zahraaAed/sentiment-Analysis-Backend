@@ -27,11 +27,24 @@ app.use(express.urlencoded({ extended: true }));
 //   origin: 'https://tonify-b853d.web.app/',
 //   credentials: true 
 // }));
-
 app.use(cors({
-  origin: '*', // Use a wildcard for development
-  credentials: true // Allow requests with credentials
- }));
+ origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if(!origin) return callback(null, true);
+    if(process.env.NODE_ENV === 'development') {
+      // Allow all origins in development mode
+      return callback(null, true);
+    }
+    // Allow specific origins in production
+    const allowedOrigins = ['https://tonify-b853d.web.app'];
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+ },
+ credentials: true // Allow requests with credentials
+}));
 
  
 app.use((req, res, next) => {
