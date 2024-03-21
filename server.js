@@ -36,7 +36,7 @@ app.use(cors({
       return callback(null, true);
     }
     // Allow specific origins in production
-    const allowedOrigins = ['https://tonify-b853d.web.app','https://marvelous-queijadas-34ae48.netlify.app/'];
+    const allowedOrigins = ['https://marvelous-queijadas-34ae48.netlify.app/'];
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
